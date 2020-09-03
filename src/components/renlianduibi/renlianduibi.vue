@@ -143,16 +143,12 @@ export default {
         this.$axios({
           method: "post",
           url: "http://10.2.39.232:20000/face/similarity/image",
-          data: { app_id: 'admin', app_secret: 'admin', imgA: this.uploadPic1, imgB: this.uploadPic1 }
+          data: { app_id: 'admin', app_secret: 'admin', imgA: this.uploadPic1.split('base64,')[1], imgB: this.uploadPic2.split('base64,')[1] }
         })
           .then(res => {
             this.isloading = false;
-            if (res.data.code == 200000) {
-              if (!res.data.data) {
-                this.$Message.error("返回数据为空");
-                return;
-              }
-              this.simlar = res.data.data.result.score.toFixed(2) + "%";
+            if (res.data.result == 0) {
+              this.simlar = (res.data.score * 100).toFixed(2) + "%";
             } else {
               this.$Message.error("请求失败");
             }
