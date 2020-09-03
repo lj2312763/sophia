@@ -143,7 +143,7 @@ export default {
         this.$axios({
           method: "post",
           url: "http://10.2.39.232:20000/face/similarity/image",
-          data: { app_id: 'admin', app_secret: 'admin', imgA: this.uploadPic1.split('base64,')[1], imgB: this.uploadPic2.split('base64,')[1] }
+          data: { app_id: 'system', app_secret: '12345', imgA: this.uploadPic1.split('base64,')[1], imgB: this.uploadPic2.split('base64,')[1] }
         })
           .then(res => {
             this.isloading = false;
