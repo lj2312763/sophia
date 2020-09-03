@@ -1,13 +1,6 @@
 <template>
   <div class="main">
-    <div class="header_content">
-      <div class="logo">
-        <div class="logoPic" @click="goHome">
-          <img src="../../assets/images/new_index/logo.png" alt="" srcset="">
-        </div>
-      </div>
-      <div class="nav">元知人脸相似度对比</div>
-    </div>
+    <div class="title">元知人脸相似度对比</div>
     <renlianduibi></renlianduibi>
   </div>
 </template>
@@ -71,41 +64,20 @@ export default {
 </script>
 <style scoped lang="less">
 .main{
-  .header_content{
-    width: 1200px;
-    margin: auto;
-    height: 60px;
+  width: 90%;
+  margin: 0 auto;
+  .title{
+    color: #121C33;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    position: relative;
-    .logo{
-      width:127px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      font-size: 22px;
-      color: #121C33;
-      cursor: pointer;
-      .logoPic{
-        width:102px;
-        img{
-          width:100%;
-          display: block;
-        }
-      }
-    }
-    .nav{
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      font-size: 18px;
-      justify-content: center;
-      color: #121C33;
-    }
-
+    justify-content: center;
+    width: 100%;
+    height: 90px;
+    text-align: center;
+    line-height: 90px;
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 

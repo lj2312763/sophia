@@ -445,6 +445,7 @@ export default {
     }
     .bottom {
       width: 100%;
+      margin-bottom: 60px;
       p {
         font-size: 18px;
         color: #121c33;
