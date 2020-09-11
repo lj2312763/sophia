@@ -1443,15 +1443,123 @@
         </div>
       </div>
     </div>
-
+    <!--皮肤分析-->
+    <div class="wisEducation" v-if="routeId == '6.1.8'">
+      <!--v-if="routeId=='6.2.3'"-->
+      <div class="title">{{ title }}</div>
+      <img :src="closeIcon" class="closeIcon" @click="closeModel"/>
+      <renwushibie :routeId="routeId"/>
+    </div>
+    <!-- 病例分析 -->
+    <div class="wisEducation" v-if="routeId == 'bingli'">
+      <div class="title">{{ title }}</div>
+      <img :src="closeIcon" class="closeIcon" @click="closeModel"/>
+      <div class="fn_container">
+        <div class="content">
+          <div class="left">
+            <div class="left_box">
+              <Upload
+                ref="upload"
+                type="drag"
+                :show-upload-list="false"
+                :before-upload="bingliUpload"
+                :max-size="5120"
+                style="width:100%;height:100%"
+                action=""
+              >
+                <div class="left_up">
+                  <div class="pic" :class="{ whFlag: !whFlag }">
+                    <img :src="bingliImg" alt=""/>
+                  </div>
+                  <div class="intro">
+                    <div class="text">
+                      图片文件类型支持PNG、JPG、JPEG、BMP，图片大小不超过1M
+                    </div>
+                    <i-button type="success">上传图片</i-button>
+                  </div>
+                </div>
+              </Upload>
+            </div>
+          </div>
+          <div class="right">
+            <div class="right_box">
+              <div class="title">病历识别：</div>
+              <div style="font-size: 14px;color: #3D4966;margin-bottom:20px;padding:10px">
+                <div
+                  style="display:flex;margin-bottom:10px"
+                  v-for="(item, index) in bingliData"
+                  :key="index"
+                >
+                  <div>{{ item.name }}</div>
+                  ：
+                  <div>{{ item.msg }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 骨骼分析 -->
+    <div class="wisEducation" v-if="routeId == 'guge'">
+      <div class="title">{{ title }}</div>
+      <img :src="closeIcon" class="closeIcon" @click="closeModel"/>
+      <div class="fn_container">
+        <div class="content">
+          <div class="left">
+            <div class="left_box">
+              <Upload
+                ref="upload"
+                type="drag"
+                :show-upload-list="false"
+                :before-upload="gugeUpload"
+                :max-size="5120"
+                style="width:100%;height:100%"
+                action=""
+              >
+                <div class="left_up">
+                  <div class="pic" :class="{ whFlag: !whFlag }">
+                    <img :src="gugeImg" alt=""/>
+                  </div>
+                  <div class="intro">
+                    <div class="text">
+                      图片文件类型支持PNG、JPG、JPEG、BMP，图片大小不超过1M
+                    </div>
+                    <i-button type="success">上传图片</i-button>
+                  </div>
+                </div>
+              </Upload>
+            </div>
+          </div>
+          <div class="right">
+            <div class="right_box">
+              <div class="title">识别结果：</div>
+              <div style="font-size: 14px;color: #3D4966;margin-bottom:20px;padding:10px">
+                <div
+                  style="display:flex;margin-bottom:10px"
+                  v-for="(item, index) in gugeData"
+                  :key="index"
+                >
+                  <div>{{ item.name }}</div>
+                  ：
+                  <div>{{ item.msg }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
     import {imgPreviewBase64, getImgSize} from "@/assets/js/imgPreviewBase64";
+    import renwushibie from "@/components/experienceColl/renlian/experice2";
 
     export default {
         props: ["routeId", "title"],
+        components: { renwushibie },
         data() {
             return {
                 transMsg1:"",
@@ -1559,6 +1667,10 @@
                 resetStart:false,
                 timeScroll:null,
                 talk:false,
+                bingliImg: require("@/assets/images/ai/bingli.png"),
+                bingliData: [],
+                gugeImg: require("@/assets/images/ai/guge.jpg"),
+                gugeData: []
             };
         },
         mounted() {
@@ -8306,6 +8418,14 @@
                     })
                 } else if (this.routeId == "1.1.3") {
                     this.isloading = false;
+                } else if (this.routeId == "6.1.8") { // 皮肤分析， 内部自己实现功能
+                    this.isloading = false;
+                } else if (this.routeId == "bingli") { // 病例分析
+                  this.isloading = false;
+                  this.initbingli();
+                } else if (this.routeId == "guge") { // 骨骼分析
+                  this.isloading = false;
+                  this.initGuge()
                 }
             },
             closeModel() {
@@ -9359,6 +9479,59 @@
                         this.resultContent2 = item;
                     }
                 });
+            },
+           // 病例上传图面
+            bingliUpload(file){
+              let _this = this;
+              imgPreviewBase64(_this, file, function (base64) {
+                _this.bingliImg = base64;
+                getImgSize(_this.bingliImg).then(res => {
+                  _this.whFlag = res.flag;
+                });
+              });
+              this.isloading = false;
+              _this.whFlag = true;
+              // this.bingliData = [
+              //   { name: '胖大舌', msg: ''},
+              //   { name: '血红细胞', msg: '高'},
+              //   { name: '其他', msg: '正常'}
+              // ]
+            },
+          initbingli(){
+            this.bingliData = [
+              { name: '胖大舌', msg: ''},
+              { name: '血红细胞', msg: '高'},
+              { name: '其他', msg: '正常'}
+            ]
+          },
+            // 病例上传图面
+            gugeUpload(file){
+              let _this = this;
+              imgPreviewBase64(_this, file, function (base64) {
+                _this.gugeImg = base64;
+                getImgSize(_this.gugeImg).then(res => {
+                  _this.whFlag = res.flag;
+                });
+              });
+              // _this.whFlag = true
+              this.isloading = false;
+              this.initGuge()
+              // this.gugeData = [
+              //   { name: '骨密度', msg: ''},
+              //   { name: '骨质增生', msg: ''},
+              //   { name: '骨质疏松', msg: ''},
+              //   { name: '骨折类型', msg: ''},
+              //   { name: '粉碎程度', msg: ''}
+              // ]
+            },
+            initGuge(){
+              this.gugeData = [
+                { name: '骨密度', msg: '是'},
+                { name: '骨质增生', msg: '是'},
+                { name: '骨质疏松', msg: '是'},
+                { name: '骨折类型', msg: '否'},
+                { name: '粉碎程度', msg: '否'}
+              ]
             }
         }
     };

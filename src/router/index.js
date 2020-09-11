@@ -46,6 +46,12 @@ const Routers = [
         children: []
       },
       {
+        name: "liveMedical", // 智慧医疗
+        path: "/liveMedical",
+        component: resolve=>(require(["@/components/medical/liveMedical"],resolve)),
+        children: []
+      },
+      {
         name: "liveHome",
         path: "/liveHome",
         component: resolve=>(require(["@/components/educate/liveHome"],resolve)),
